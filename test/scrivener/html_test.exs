@@ -373,5 +373,25 @@ defmodule Scrivener.HTMLTest do
                 62, "&gt;&gt;", 60, 47, "a", 62], 60, 47, "li", 62]], 60, 47, "ul", 62], 60, 47, "nav", 62]} =
         HTML.pagination_links(build_conn(), %Page{entries: [], page_number: 1, page_size: 10, total_entries: 2, total_pages: 2}, view_style: :bulma)
     end
+
+
+
+# Custom class
+
+    test "accepts a custom class" do
+      assert {:safe, _html} = HTML.pagination_links(%Page{total_pages: 10, page_number: 5}, view_style: :bootstrap, path: &MyApp.Router.Helpers.post_path/3, ul_class: "pagination justify-content-center")
+    end
+
+    test "renders custom bootstrap v4 classes" do
+      assert {:safe, [60, "nav", [[32, "aria-label", 61, 34, "Page navigation", 34]],
+                        62,
+                        [60, "ul", [[32, "class", 61, 34, "pagination justify-content-center", 34]], 62,
+                         [[60, "li", [[32, "class", 61, 34, "active page-item", 34]], 62,
+                           [60, "a", [[32, "class", 61, 34, "page-link", 34]], 62, "1",
+                            60, 47, "a", 62], 60, 47, "li", 62]], 60, 47, "ul", 62], 60,
+                        47, "nav", 62]} =
+        HTML.pagination_links(build_conn(), %Page{entries: [], page_number: 1, page_size: 10, total_entries: 0, total_pages: 0}, view_style: :bootstrap_v4, ul_class: "pagination justify-content-center")
+    end
+
   end
 end
